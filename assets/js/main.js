@@ -37,6 +37,7 @@ const quizz = {
 	incorrectas: 0,
 	respuestas: [],
 	crearPregunta : ()=>{
+		$('#progreso').html(`<p>${quizz.contador} of ${quizz.total} answered</p>`)
 		$("#prueba").empty();
 		let preguntaActual = quizz.preguntas[quizz.contador];
 		$("#prueba").append(
@@ -48,9 +49,7 @@ const quizz = {
 				quizz.respuestas[quizz.contador]=l;
 				quizz.siguiente();
 			})
-
 		})
-
 	},
 	siguiente : ()=>{
 		quizz.contador++;
@@ -60,6 +59,12 @@ const quizz = {
 			quizz.mostrarRespuestas();
 		}
 
+	},
+	atrás: ()=>{
+		quizz.contador--;
+		if(quizz.contador>0){
+			quizz.crearPregunta();
+		}
 	},
 	mostrarRespuestas: ()=>{
 		$('#prueba').empty();
@@ -86,7 +91,6 @@ const quizz = {
 		quizz.total= Object.keys(quizz.preguntas).length;
 		quizz.crearPregunta();
 	}
-
 }
 
 $(document).ready(quizz.iniciar)
