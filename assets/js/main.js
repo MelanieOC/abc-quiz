@@ -34,11 +34,10 @@ const quizz = {
 	total:null,
 	contador: 0,
 	correctas: 0,
-	incorrectas: 0,
 	respuestas: [],
 	crearPregunta : ()=>{
+		quizz.barraProgreso();
 		quizz.eventos();
-		$('#progreso').html(`<p>${quizz.respuestas.length} of ${quizz.total} answered</p>`);
 		$("#prueba").empty();
 		let preguntaActual = quizz.preguntas[quizz.contador];
 		$("#prueba").append(
@@ -64,9 +63,14 @@ const quizz = {
 		quizz.contador--;
 		quizz.crearPregunta();
 	},
+	barraProgreso: ()=>{
+		$('.progress-label').html(`${quizz.respuestas.length} of ${quizz.total} answered`);
+		let mm = 20*quizz.respuestas.length;
+		$(".progress-bar").width(`${mm}%`);
+	},
 	mostrarRespuestas: ()=>{
 		$('#prueba').empty();
-		$('#progreso').html(`<p>${quizz.respuestas.length} of ${quizz.total} answered</p>`);
+		quizz.barraProgreso();
 		$.each(quizz.respuestas, (i,l)=>{
 			$("#prueba").append(`<p >${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`)
 		})
@@ -81,28 +85,33 @@ const quizz = {
 				quizz.correctas++;
 				$("#prueba").append(`<p class='text-success'>${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`)
 			}else{
-				quizz.incorrectas++;
 				$("#prueba").append(
 					`<p class='text-danger'>${i+1}. ${quizz.preguntas[i].pregunta} <strong><strike>${l}</strike></strong> ${quizz.preguntas[i].respuesta}</p>`
 				)
 			}
 		})
-		$('#prueba').prepend('<h1>hola</h1>');
+		let dd= `${quizz.correctas} out of ${quizz.total} correct!`;
+		if(quizz.correctas==0){
+			$('#prueba').prepend(`<h3 class="text-center">Ooops, ${dd}</h3>`);
+		} else if(quizz.correctas==quizz.total) {
+			$('#prueba').prepend(`<h3 class="text-center">Wow, ${dd}</h3>`);
+		} else {
+			$('#prueba').prepend(`<h3 class="text-center">${dd}</h3>`);
+		}
+		
 	},
 	eventos: ()=>{
-		console.log(quizz.respuestas);
-		console.log(quizz.contador);
 		$('#siguiente').off('click');
 		$('#anterior').off('click');
 		if(quizz.respuestas.length>quizz.contador){
 			$('#siguiente').removeClass('disabled').click(quizz.siguiente);
 		}else{
-			$('#siguiente').addClass('disabled').off('click');
+			$('#siguiente').addClass('disabled');
 		}
 		if(quizz.respuestas.length>=quizz.contador && quizz.contador!=0){
 			$('#anterior').removeClass('disabled').click(quizz.anterior);
 		}else{
-			$('#anterior').addClass('disabled').off('click');
+			$('#anterior').addClass('disabled');
 		}
 	},
 	iniciar : ()=>{
