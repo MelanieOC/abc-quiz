@@ -31,7 +31,10 @@ const quizz = {
 			imagen: 'assets/img/car.svg'
 		}
 	},
+	total:null,
 	contador: 0,
+	correctas: 0,
+	incorrectas: 0,
 	respuestas: [],
 	crearPregunta : ()=>{
 		$("#prueba").empty();
@@ -50,29 +53,37 @@ const quizz = {
 
 	},
 	siguiente : ()=>{
-		let total= Object.keys(quizz.preguntas).length;
 		quizz.contador++;
-		if(quizz.contador<total){
+		if(quizz.contador<quizz.total){
 			quizz.crearPregunta();
 		}else{
 			quizz.mostrarRespuestas();
 		}
 
 	},
-	eventos: ()=>{
-		$(".btn").click(()=>{quizz.siguiente(this)});
-	},
 	mostrarRespuestas: ()=>{
 		$('#prueba').empty();
 		$.each(quizz.respuestas, (i,l)=>{
-			$("#prueba").append(
-				`<p>${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`
-			)
+			$("#prueba").append(`<p >${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`)
 		})
-		$('<button>').addClass('btn').html('Submit').appendTo("#prueba").click()
+		$('<button>').addClass('btn').html('Submit').appendTo("#prueba").click(quizz.comparar)
+	},
+	comparar:()=>{
+		$('#prueba').empty();
+		$.each(quizz.respuestas, (i,l)=>{
+			if(l==quizz.preguntas[i].respuesta){
+				quizz.correctas++;
+				$("#prueba").append(`<p class='text-success'>${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`)
+			}else{
+				quizz.incorrectas++;
+				$("#prueba").append(
+					`<p class='text-danger'>${i+1}. ${quizz.preguntas[i].pregunta} <strong><strike>${l}</strike></strong> ${quizz.preguntas[i].respuesta}</p>`
+				)
+			}
+		})
 	},
 	iniciar : ()=>{
-		console.log();
+		quizz.total= Object.keys(quizz.preguntas).length;
 		quizz.crearPregunta();
 	}
 
