@@ -50,18 +50,29 @@ const quizz = {
 
 	},
 	siguiente : ()=>{
-		//quizz.respuestas[quizz.contador]=$(e).html();
-		console.log(quizz.respuestas);
+		let total= Object.keys(quizz.preguntas).length;
 		quizz.contador++;
-		quizz.crearPregunta();
+		if(quizz.contador<total){
+			quizz.crearPregunta();
+		}else{
+			quizz.mostrarRespuestas();
+		}
+
 	},
 	eventos: ()=>{
 		$(".btn").click(()=>{quizz.siguiente(this)});
 	},
 	mostrarRespuestas: ()=>{
-
+		$('#prueba').empty();
+		$.each(quizz.respuestas, (i,l)=>{
+			$("#prueba").append(
+				`<p>${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`
+			)
+		})
+		$('<button>').addClass('btn').html('Submit').appendTo("#prueba").click()
 	},
 	iniciar : ()=>{
+		console.log();
 		quizz.crearPregunta();
 	}
 
