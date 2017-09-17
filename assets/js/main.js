@@ -42,10 +42,12 @@ const quizz = {
 		let preguntaActual = quizz.preguntas[quizz.contador];
 		$("#prueba").append(
 			`<img src="${preguntaActual.imagen}">
-			<h1> ${preguntaActual.pregunta} </h1>`
+			<h4> ${preguntaActual.pregunta} </h4>`
 		)
 		$.each(preguntaActual.opciones, (i,l)=>{
-			$('<button>').addClass('btn').html(l).appendTo("#prueba").click(()=>{
+			$('<div>').html(
+				`<div class="well">${l}</div>`
+			).appendTo("#prueba").click(()=>{
 				quizz.respuestas[quizz.contador]=l;
 				quizz.siguiente();
 			})

@@ -1,3 +1,6 @@
 .disabled{
     opacity: 0.5;
 }
+#siguiente, #anterior{
+    background-color: transparent;    
+}
