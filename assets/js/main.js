@@ -2,31 +2,31 @@ const quizz = {
 	preguntas:{
 		0:{
 			pregunta: 'Which is the oldest airline in the world?',
-			opciones: ['Avianca', 'KLM', 'Qantas'],
+			opciones: {A:'Avianca', B:'KLM', C:'Qantas'},
 			respuesta: 'KLM',
 			imagen: 'assets/img/plane.svg'
 		},
 		1:{
 			pregunta: 'Which is the largest port in the world?',
-			opciones: ['Port of Shanghai', 'Port of Singapore', 'Port of Rotterdam'],
+			opciones: {A:'Port of Shanghai', B:'Port of Singapore', C:'Port of Rotterdam'},
 			respuesta: 'Port of Shanghai',
 			imagen: 'assets/img/ship.svg'
 		},
 		2:{
 			pregunta: 'What is the longest distance cycling backwards?',
-			opciones: ['89.30 km', '675.10 km', '337.60 km'],
+			opciones: {A:'89.30 km', B:'675.10 km', C:'337.60 km'},
 			respuesta: '337.60 km',
 			imagen: 'assets/img/bycicle.svg'
 		},
 		3:{
 			pregunta: 'What is the highest speed ever reached by a school bus?',
-			opciones: ['590 km/h', '320 km/h', '245 km/h'],
+			opciones: {A:'590 km/h', B:'320 km/h', C:'245 km/h'},
 			respuesta: '590 km/h',
 			imagen: 'assets/img/bus.svg'
 		},
 		4:{
 			pregunta: 'What is the longest car trip on one tank of gas?',
-			opciones: ['2617 km', '3568 km', '1732 km'],
+			opciones: {A:'2617 km', B:'3568 km', C:'1732 km'},
 			respuesta: '2617 km',
 			imagen: 'assets/img/car.svg'
 		}
@@ -40,14 +40,15 @@ const quizz = {
 		quizz.eventos();
 		$("#prueba").empty();
 		let preguntaActual = quizz.preguntas[quizz.contador];
+		$("header").html(`<img src="${preguntaActual.imagen}">`);
 		$("#prueba").append(
-			`<img src="${preguntaActual.imagen}">
-			<h4> ${preguntaActual.pregunta} </h4>`
+			`<h4 class="text-center"> ${preguntaActual.pregunta} </h4>
+			<div class="opciones row"></div>`
 		)
 		$.each(preguntaActual.opciones, (i,l)=>{
-			$('<div>').html(
-				`<div class="well">${l}</div>`
-			).appendTo("#prueba").click(()=>{
+			$('<div>').addClass('col-md-4').html(
+				`<button class="btn text-center">${l}</button>`
+			).appendTo(".opciones").click(()=>{
 				quizz.respuestas[quizz.contador]=l;
 				quizz.siguiente();
 			})
@@ -71,6 +72,7 @@ const quizz = {
 		$(".progress-bar").width(`${mm}%`);
 	},
 	mostrarRespuestas: ()=>{
+		$("header").html(`<img src="assets/img/truck.svg">`);
 		$('#prueba').empty();
 		quizz.barraProgreso();
 		$.each(quizz.respuestas, (i,l)=>{

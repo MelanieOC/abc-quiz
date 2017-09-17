@@ -10,18 +10,27 @@
 </head>
 <body>
 	<div class="container">
-		<div id="progreso">
-			<div class="progress-label"></div>
-			<div class="progress">
-				<div class="progress-bar" role="progressbar" aria-valuemax="100" style="width:0%">
-					<span class="sr-only">0% Complete</span>
+		<header class="text-center">
+
+		</header>
+		<div class="content">
+			<div id="progreso">
+				<div class="progress-label"></div>
+				<div class="progress">
+					<div class="progress-bar" role="progressbar" aria-valuemax="100" style="width:0%; height: 5px;">
+						<span class="sr-only">0% Complete</span>
+					</div>
 				</div>
 			</div>
+			<div id="prueba"></div>
 		</div>
-		<div id="prueba"></div>
-		<div id="flechas">
-			<button id="anterior" class="btn disabled"><img src="assets/img/navigation-left-arrow.svg" alt=""></button>
-			<button id="siguiente" class="btn disabled"><img src="assets/img/navigation-right-arrow.svg" alt=""></button>
+		<div id="flechas" class="text-center">
+			<button id="anterior" class="btn disabled">
+				<img class="img-responsive" src="assets/img/navigation-left-arrow.svg" alt="">
+			</button>
+			<button id="siguiente" class="btn disabled">
+				<img class="img-responsive" src="assets/img/navigation-right-arrow.svg" alt="">
+			</button>
 		</div>
 	</div>
 	<script src="assets/js/jquery-3.2.1.min.js"></script>
