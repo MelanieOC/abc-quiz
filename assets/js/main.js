@@ -37,7 +37,8 @@ const quizz = {
 	incorrectas: 0,
 	respuestas: [],
 	crearPregunta : ()=>{
-		$('#progreso').html(`<p>${quizz.contador} of ${quizz.total} answered</p>`)
+		quizz.eventos();
+		$('#progreso').html(`<p>${quizz.respuestas.length} of ${quizz.total} answered</p>`);
 		$("#prueba").empty();
 		let preguntaActual = quizz.preguntas[quizz.contador];
 		$("#prueba").append(
@@ -58,22 +59,22 @@ const quizz = {
 		}else{
 			quizz.mostrarRespuestas();
 		}
-
 	},
-	atrás: ()=>{
+	anterior: ()=>{
 		quizz.contador--;
-		if(quizz.contador>0){
-			quizz.crearPregunta();
-		}
+		quizz.crearPregunta();
 	},
 	mostrarRespuestas: ()=>{
 		$('#prueba').empty();
+		$('#progreso').html(`<p>${quizz.respuestas.length} of ${quizz.total} answered</p>`);
 		$.each(quizz.respuestas, (i,l)=>{
 			$("#prueba").append(`<p >${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`)
 		})
 		$('<button>').addClass('btn').html('Submit').appendTo("#prueba").click(quizz.comparar)
 	},
 	comparar:()=>{
+		$('#progreso').hide();
+		$('#flechas').hide();
 		$('#prueba').empty();
 		$.each(quizz.respuestas, (i,l)=>{
 			if(l==quizz.preguntas[i].respuesta){
@@ -86,6 +87,23 @@ const quizz = {
 				)
 			}
 		})
+		$('#prueba').prepend('<h1>hola</h1>');
+	},
+	eventos: ()=>{
+		console.log(quizz.respuestas);
+		console.log(quizz.contador);
+		$('#siguiente').off('click');
+		$('#anterior').off('click');
+		if(quizz.respuestas.length>quizz.contador){
+			$('#siguiente').removeClass('disabled').click(quizz.siguiente);
+		}else{
+			$('#siguiente').addClass('disabled').off('click');
+		}
+		if(quizz.respuestas.length>=quizz.contador && quizz.contador!=0){
+			$('#anterior').removeClass('disabled').click(quizz.anterior);
+		}else{
+			$('#anterior').addClass('disabled').off('click');
+		}
 	},
 	iniciar : ()=>{
 		quizz.total= Object.keys(quizz.preguntas).length;
