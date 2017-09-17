@@ -1,24 +1,28 @@
 body {
     padding: 50px 0;
-    background: #fff3ec;
+    background-color: #fff3ec;
 }
 header {
     margin-bottom: 50px;
     position: relative;
     min-height: 90px;
 }
+@media (min-width: 992px){
+    header img {
+        min-width: 235px;
+    }
+}
+
 header img {
     max-width: 120px;
-    position: absolute;
-    top: auto;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
 }
 #siguiente, #anterior{
     background-color: transparent;
     padding: 0 10px;
     outline: none; 
+}
+#progreso .progress{
+    height: 6px;
 }
 .progress .progress-bar {
     background-color: #4b4668;
@@ -36,6 +40,19 @@ header img {
     width: 40px;
     height: 40px;
 }
+@media (max-width: 720px){
+    #flechas{
+        position: absolute;
+        top: 0;
+        right: 20px;
+    
+    }
+}
+@media (min-width: 720px){
+    .content {
+        padding: 60px 20px 90px;
+    }
+}
 .content {
     background-color: #fff;
     padding: 20px 20px 90px;
@@ -45,21 +62,31 @@ header img {
     position: relative;
     z-index: 2;
 }
-@media (min-width: 720px){
-    .content {
-        padding: 60px 20px 90px;
-    }
-}
 
+ #prueba h3{
+    color: #4b4668;
+ }
 .opciones button {
     background-color: #edecf0;
     color: #4b4668;
     font-size: 24px;
     font-weight: 700;
     margin: 0 0 15px;
+    text-align: left;
     border: 1px solid #4b4668;
     padding: 6px 44px 6px 14px;
     width: 100%;
-    text-align: left;
     transition: background-color .3s linear,border-color .3s linear,color .3s linear;
+}
+.letra {
+    font-size: 14px;
+    font-weight: 400;
+    display: inline-block;
+    padding: 3px 8px 4px;
+    background-color: #4b4668;
+    color: #fff;
+    margin-right: 8px;
+    position: relative;
+    top: -4px;
+    border-radius: 3px;
 }
