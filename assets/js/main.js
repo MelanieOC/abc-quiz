@@ -83,33 +83,35 @@ const quizz = {
 	mostrarRespuestas: ()=>{
 		$("header").html(`<img src="assets/img/truck.svg">`);
 		$('#prueba').empty();
+		$('#prueba').append('<h2>Here are your answer:</h2><div id="respuestas"></div>');
 		quizz.barraProgreso();
 		$.each(quizz.respuestas, (i,l)=>{
-			$("#prueba").append(`<p >${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`)
+			$("#respuestas").append(`<p >${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`)
 		})
-		$('<button>').addClass('btn').html('Submit').appendTo("#prueba").click(quizz.comparar)
+		$('<button>').addClass('btn').html('Submit').appendTo("#respuestas").click(quizz.comparar)
 	},
 	comparar:()=>{
 		$('#progreso').hide();
 		$('#flechas').hide();
 		$('#prueba').empty();
+		$('#prueba').addClass('text-center').append('<div id="respuestas"></div>');
 		$.each(quizz.respuestas, (i,l)=>{
 			if(l==quizz.preguntas[i].respuesta){
 				quizz.correctas++;
-				$("#prueba").append(`<p class='text-success'>${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`)
+				$("#respuestas").append(`<p class='text-success'>${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`)
 			}else{
-				$("#prueba").append(
+				$("#respuestas").append(
 					`<p class='text-danger'>${i+1}. ${quizz.preguntas[i].pregunta} <strong><strike>${l}</strike></strong> ${quizz.preguntas[i].respuesta}</p>`
 				)
 			}
 		})
 		let dd= `${quizz.correctas} out of ${quizz.total} correct!`;
 		if(quizz.correctas==0){
-			$('#prueba').prepend(`<h3 class="text-center">Ooops, ${dd}</h3>`);
+			$('#respuestas').prepend(`<h3 class="text-center">Ooops, ${dd}</h3>`);
 		} else if(quizz.correctas==quizz.total) {
-			$('#prueba').prepend(`<h3 class="text-center">Wow, ${dd}</h3>`);
+			$('#respuestas').prepend(`<h3 class="text-center">Wow, ${dd}</h3>`);
 		} else {
-			$('#prueba').prepend(`<h3 class="text-center">${dd}</h3>`);
+			$('#respuestas').prepend(`<h3 class="text-center">${dd}</h3>`);
 		}
 		
 	},

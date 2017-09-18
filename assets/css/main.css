@@ -55,16 +55,6 @@ header img {
     position: relative;
     z-index: 2;
 }
-@media (max-width: 720px){
-    #flechas{
-        position: absolute;
-        top: 0;
-        right: 20px;    
-    }
-    .content {
-        padding: 20px 20px 90px;
-    }
-}
 
 
  #prueba h3{
@@ -104,4 +94,15 @@ header img {
     color: #4b4668;
     position: absolute;
     right: 25px;
+}
+
+@media (max-width: 720px){
+    #flechas{
+        position: absolute;
+        top: 0;
+        right: 20px;    
+    }
+    .content {
+        padding: 20px 20px 90px;
+    }
 }
