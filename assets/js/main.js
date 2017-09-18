@@ -46,11 +46,20 @@ const quizz = {
 			<div class="opciones row"></div>`
 		)
 		$.each(preguntaActual.opciones, (key,value)=>{
-			$('<div>').addClass('col-md-4').html(
+			let clase = '';
+			if (quizz.respuestas[quizz.contador]==value) {
+				clase = 'select';
+			} else {
+				clase = ' ';
+			}
+			$('<div>').addClass(`col-md-4 ${clase}`).html(
 				`<button class="btn"><span class='letra'>${key}</span>${value}</button>`
-			).appendTo(".opciones").click(()=>{
+			).appendTo(".opciones").click((e)=>{
+				$(e.currentTarget).addClass('select');
 				quizz.respuestas[quizz.contador]=value;
-				quizz.siguiente();
+				let t = setTimeout(()=>{
+					quizz.siguiente();
+				}, 1000);
 			})
 		})
 	},
