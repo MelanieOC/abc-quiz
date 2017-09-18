@@ -5,7 +5,7 @@ body {
 button{
     outline: none;
 }
-button:active{
+button:focus{
     outline: none;
     border: none;
 }
@@ -56,7 +56,6 @@ header img {
     max-width: 90%;
     margin: 0 auto;
     position: relative;
-    z-index: 2;
 }
 #prueba{
     color: #4b4668;
@@ -119,9 +118,10 @@ header img {
     color: #fff;
     margin-top: 30px;
 }
-@media (max-width: 720px){
+@media (max-width: 850px){
     header{
         margin-bottom: 20px;
+        padding-top: 20px;
     }
     #flechas{
         position: absolute;
@@ -132,7 +132,7 @@ header img {
         padding: 20px;
     }
     #respuestas{
-        max-width: 95%;
+        max-width: 100%;
     }
     #prueba h1{
         font-size: 24px;

@@ -1,4 +1,4 @@
-const quizz = {
+const trivia = {
 	preguntas:{
 		0:{
 			pregunta: 'Which is the oldest airline in the world?',
@@ -43,10 +43,10 @@ const quizz = {
 	respuestas: [],
 	marcar: true,
 	crearPregunta : ()=>{
-		quizz.barraProgreso();
-		quizz.eventosFlechas();
+		trivia.barraProgreso();
+		trivia.eventosFlechas();
 		$("#prueba").empty();
-		let preguntaActual = quizz.preguntas[quizz.contar.pregunta];
+		let preguntaActual = trivia.preguntas[trivia.contar.pregunta];
 		$("header").html(`<img src="${preguntaActual.imagen}">`);
 		$("#prueba").append(
 			`<h1 class="text-center"> ${preguntaActual.pregunta} </h1>
@@ -54,108 +54,110 @@ const quizz = {
 		)
 		$.each(preguntaActual.opciones, (key,value)=>{
 			let clase = '';
-			if (quizz.respuestas[quizz.contar.pregunta]==value) {
+			if (trivia.respuestas[trivia.contar.pregunta]==value) {
 				clase = 'seleccionado';
 			} 
 			$('<div>').addClass(`col-md-4 ${clase}`).html(
 				`<button class="btn"><span class='letra'>${key}</span>${value}</button>`
 			).appendTo(".opciones").click((e)=>{
-				quizz.guardarRespuesta(e.currentTarget, value);
+				trivia.guardarRespuesta(e.currentTarget, value);
 			})
 		})
 	},
 	guardarRespuesta: (d, value)=>{
-		if(quizz.marcar){
+		if(trivia.marcar){
 			$(d).addClass('seleccionado');
-			quizz.marcar=false;
-			quizz.respuestas[quizz.contar.pregunta]=value;
+			trivia.marcar=false;
+			trivia.respuestas[trivia.contar.pregunta]=value;
 			let t = setTimeout(()=>{
-				quizz.marcar=true;
-				quizz.siguiente();
+				trivia.marcar=true;
+				trivia.siguiente();
 			}, 900);
 		}
 	},
 	siguiente : ()=>{
-		quizz.contar.pregunta++;
-		if(quizz.contar.pregunta<quizz.contar.total){
-			quizz.crearPregunta();
+		trivia.contar.pregunta++;
+		if(trivia.contar.pregunta<trivia.contar.total){
+			trivia.crearPregunta();
 		}else {
-			quizz.mostrarRespuestas();
+			trivia.mostrarRespuestas();
 		}
 	},
 	anterior: ()=>{
-		quizz.contar.pregunta--;
-		quizz.crearPregunta();
+		trivia.contar.pregunta--;
+		trivia.crearPregunta();
 	},
 	barraProgreso: ()=>{
-		$('.progress-label').html(`${quizz.respuestas.length} of ${quizz.contar.total} answered`);
-		let multiplo = 20*quizz.respuestas.length;
+		$('.progress-label').html(`${trivia.respuestas.length} of ${trivia.contar.total} answered`);
+		let multiplo = 20*trivia.respuestas.length;
 		$(".progress-bar").width(`${multiplo}%`);
 	},
 	listaRespuestas:(comparar, boton, funcion)=>{
 		$('#prueba').empty().append('<div id="respuestas"></div>');
-		$.each(quizz.respuestas, (i,l)=>{
+		$.each(trivia.respuestas, (i,l)=>{
 			let estilo = '';
 			let contenido=l;
-			if(comparar && l==quizz.preguntas[i].respuesta){
-				quizz.contar.correctas++;
+			if(comparar && l==trivia.preguntas[i].respuesta){
+				trivia.contar.correctas++;
 				estilo='class="text-success"';
 			}else if(comparar){
 				estilo=`class='text-danger'`;
-				contenido = `<strike>${l}</strike> ${quizz.preguntas[i].respuesta}`;
+				contenido = `<strike>${l}</strike> ${trivia.preguntas[i].respuesta}`;
 			}
-			$("#respuestas").append(`<p ${estilo}>${i+1}. ${quizz.preguntas[i].pregunta} <strong>${contenido}</strong></p>`)
+			$("#respuestas").append(`<p ${estilo}>${i+1}. ${trivia.preguntas[i].pregunta} <strong>${contenido}</strong></p>`)
 		})
-		$('<button>').addClass('btn-lg btn-dark').html(boton).appendTo("#respuestas").click(funcion);
+		$('<div>').addClass('text-center').append(
+			$('<button>').addClass('btn-lg btn-dark').html(boton).click(funcion)
+		).appendTo("#respuestas");
 	},
 	mostrarRespuestas: ()=>{
 		$("header").html(`<img src="assets/img/truck.svg">`);
-		quizz.barraProgreso();
-		quizz.listaRespuestas(false, 'Submit', quizz.comparar);
-		quizz.flecha.siguiente.addClass('disabled').off('click');
+		trivia.barraProgreso();
+		trivia.listaRespuestas(false, 'Submit', trivia.comparar);
+		trivia.flecha.siguiente.addClass('disabled').off('click');
 		$('#respuestas').prepend(`<h1 class="text-center">Here are your answer:</h1>`);
 	},
 	comparar:()=>{
 		$('#progreso').hide();
 		$('#flechas').hide();
-		quizz.listaRespuestas(true, 'Star Again', quizz.jugarOtravez);
+		trivia.listaRespuestas(true, 'Star Again', trivia.jugarOtravez);
 		let expresion='';
-		if(quizz.contar.correctas==0){
+		if(trivia.contar.correctas==0){
 			expresion='Ooops, ';
-		} else if(quizz.contar.correctas==quizz.contar.total) {
+		} else if(trivia.contar.correctas==trivia.contar.total) {
 			expresion='Wow, ';
 		} 
-		let titulo=`${expresion}${quizz.contar.correctas} out of ${quizz.contar.total} correct!`;
+		let titulo=`${expresion}${trivia.contar.correctas} out of ${trivia.contar.total} correct!`;
 		$('#respuestas').prepend(`<h1 class="text-center">${titulo}</h1>`);
 	},
 	eventosFlechas: ()=>{
-		quizz.flecha.siguiente.off('click');
-		quizz.flecha.anterior.off('click');
-		if(quizz.respuestas.length>quizz.contar.pregunta){
-			quizz.flecha.siguiente.removeClass('disabled').click(quizz.siguiente);
+		trivia.flecha.siguiente.off('click');
+		trivia.flecha.anterior.off('click');
+		if(trivia.respuestas.length>trivia.contar.pregunta){
+			trivia.flecha.siguiente.removeClass('disabled').click(trivia.siguiente);
 		}else{
-			quizz.flecha.siguiente.addClass('disabled');
+			trivia.flecha.siguiente.addClass('disabled');
 		}
-		if(quizz.respuestas.length>=quizz.contar.pregunta && quizz.contar.pregunta!=0){
-			quizz.flecha.anterior.removeClass('disabled').click(quizz.anterior);
+		if(trivia.respuestas.length>=trivia.contar.pregunta && trivia.contar.pregunta!=0){
+			trivia.flecha.anterior.removeClass('disabled').click(trivia.anterior);
 		}else{
-			quizz.flecha.anterior.addClass('disabled');
+			trivia.flecha.anterior.addClass('disabled');
 		}
 	},
 	jugarOtravez:()=>{
 		$('#progreso').show();
 		$('#flechas').show();
-		quizz.respuestas=[];
-		quizz.contar.pregunta=0;
-		quizz.contar.correctas=0;
-		quizz.crearPregunta();
+		trivia.respuestas=[];
+		trivia.contar.pregunta=0;
+		trivia.contar.correctas=0;
+		trivia.crearPregunta();
 	},
 	iniciar : ()=>{
-		quizz.contar.total= Object.keys(quizz.preguntas).length;
-		quizz.flecha.siguiente=$('#siguiente');
-		quizz.flecha.anterior=$('#anterior');
-		quizz.crearPregunta();
+		trivia.contar.total= Object.keys(trivia.preguntas).length;
+		trivia.flecha.siguiente=$('#siguiente');
+		trivia.flecha.anterior=$('#anterior');
+		trivia.crearPregunta();
 	}
 }
 
-$(document).ready(quizz.iniciar)
+$(document).ready(trivia.iniciar)
