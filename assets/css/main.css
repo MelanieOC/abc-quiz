@@ -25,7 +25,7 @@ header img {
 }
 #siguiente, #anterior{
     background-color: transparent;
-    padding: 0 10px; 
+    padding: 0 10px;
 }
 #progreso .progress{
     height: 6px;
@@ -56,9 +56,9 @@ header img {
     z-index: 2;
 }
 
- #prueba h3{
+ #prueba h1 {
     color: #4b4668;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
  }
  #respuestas{
     max-width: 70%;
@@ -98,7 +98,14 @@ header img {
     position: absolute;
     right: 25px;
 }
-
+ #redesSociales{
+     margin-top: 30px;
+     opacity: 0.5;
+     cursor: pointer;
+ }
+ #redesSociales:hover{
+     opacity: 1;
+ }
 @media (max-width: 720px){
     header{
         margin-bottom: 20px;
@@ -106,9 +113,16 @@ header img {
     #flechas{
         position: absolute;
         top: 0;
-        right: 20px;    
+        right: 20px;
     }
     .content {
         padding: 20px;
+    }
+    #respuestas{
+        max-width: 95%;
+    }
+    #prueba h1{
+        font-size: 24px;
+        margin-bottom: 20px;
     }
 }
