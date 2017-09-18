@@ -58,17 +58,20 @@ const quizz = {
 			$('<div>').addClass(`col-md-4 ${clase}`).html(
 				`<button class="btn"><span class='letra'>${key}</span>${value}</button>`
 			).appendTo(".opciones").click((e)=>{
-				if(quizz.marcar){
-					$(e.currentTarget).addClass('select');
-					quizz.marcar=false;
-					quizz.respuestas[quizz.contador]=value;
-					let t = setTimeout(()=>{
-						quizz.marcar=true;
-						quizz.siguiente();
-					}, 900);
-				}
+				quizz.guardarRespuesta(e.currentTarget, value);
 			})
 		})
+	},
+	guardarRespuesta: (d, value)=>{
+		if(quizz.marcar){
+			$(d).addClass('select');
+			quizz.marcar=false;
+			quizz.respuestas[quizz.contador]=value;
+			let t = setTimeout(()=>{
+				quizz.marcar=true;
+				quizz.siguiente();
+			}, 900);
+		}
 	},
 	siguiente : ()=>{
 		quizz.contador++;
@@ -92,7 +95,7 @@ const quizz = {
 		$('#prueba').empty().append('<h1 class="text-center">Here are your answer:</h1><div id="respuestas"></div>');
 		quizz.barraProgreso();
 		$.each(quizz.respuestas, (i,l)=>{
-			$("#respuestas").append(`<p >${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`)
+			$("#respuestas").append(`<p>${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`)
 		})
 		$('<button>').addClass('btn').html('Submit').appendTo("#respuestas").click(quizz.comparar)
 	},
