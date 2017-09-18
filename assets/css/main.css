@@ -56,10 +56,13 @@ header img {
     z-index: 2;
 }
 
-
  #prueba h3{
     color: #4b4668;
     margin-bottom: 40px;
+ }
+ #respuestas{
+    max-width: 70%;
+    margin: 0 auto;
  }
 .opciones button {
     background-color: #edecf0;

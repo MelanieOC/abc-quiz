@@ -83,7 +83,7 @@ const quizz = {
 	mostrarRespuestas: ()=>{
 		$("header").html(`<img src="assets/img/truck.svg">`);
 		$('#prueba').empty();
-		$('#prueba').append('<h2>Here are your answer:</h2><div id="respuestas"></div>');
+		$('#prueba').append('<h2 class="text-center">Here are your answer:</h2><div id="respuestas"></div>');
 		quizz.barraProgreso();
 		$.each(quizz.respuestas, (i,l)=>{
 			$("#respuestas").append(`<p >${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`)
@@ -94,7 +94,7 @@ const quizz = {
 		$('#progreso').hide();
 		$('#flechas').hide();
 		$('#prueba').empty();
-		$('#prueba').addClass('text-center').append('<div id="respuestas"></div>');
+		$('#prueba').append('<div id="respuestas"></div>');
 		$.each(quizz.respuestas, (i,l)=>{
 			if(l==quizz.preguntas[i].respuesta){
 				quizz.correctas++;
