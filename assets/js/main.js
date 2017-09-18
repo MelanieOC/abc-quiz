@@ -35,16 +35,18 @@ const quizz = {
 		siguiente: null,
 		anterior: null
 	},
-	total:null,
-	contador: 0,
-	correctas: 0,
+	contar: {
+		total:null,
+		pregunta: 0,
+		correctas: 0
+	},
 	respuestas: [],
 	marcar: true,
 	crearPregunta : ()=>{
 		quizz.barraProgreso();
-		quizz.eventos();
+		quizz.eventosFlechas();
 		$("#prueba").empty();
-		let preguntaActual = quizz.preguntas[quizz.contador];
+		let preguntaActual = quizz.preguntas[quizz.contar.pregunta];
 		$("header").html(`<img src="${preguntaActual.imagen}">`);
 		$("#prueba").append(
 			`<h1 class="text-center"> ${preguntaActual.pregunta} </h1>
@@ -52,8 +54,8 @@ const quizz = {
 		)
 		$.each(preguntaActual.opciones, (key,value)=>{
 			let clase = '';
-			if (quizz.respuestas[quizz.contador]==value) {
-				clase = 'select';
+			if (quizz.respuestas[quizz.contar.pregunta]==value) {
+				clase = 'seleccionado';
 			} 
 			$('<div>').addClass(`col-md-4 ${clase}`).html(
 				`<button class="btn"><span class='letra'>${key}</span>${value}</button>`
@@ -64,9 +66,9 @@ const quizz = {
 	},
 	guardarRespuesta: (d, value)=>{
 		if(quizz.marcar){
-			$(d).addClass('select');
+			$(d).addClass('seleccionado');
 			quizz.marcar=false;
-			quizz.respuestas[quizz.contador]=value;
+			quizz.respuestas[quizz.contar.pregunta]=value;
 			let t = setTimeout(()=>{
 				quizz.marcar=true;
 				quizz.siguiente();
@@ -74,66 +76,67 @@ const quizz = {
 		}
 	},
 	siguiente : ()=>{
-		quizz.contador++;
-		if(quizz.contador<quizz.total){
+		quizz.contar.pregunta++;
+		if(quizz.contar.pregunta<quizz.contar.total){
 			quizz.crearPregunta();
 		}else {
 			quizz.mostrarRespuestas();
 		}
 	},
 	anterior: ()=>{
-		quizz.contador--;
+		quizz.contar.pregunta--;
 		quizz.crearPregunta();
 	},
 	barraProgreso: ()=>{
-		$('.progress-label').html(`${quizz.respuestas.length} of ${quizz.total} answered`);
+		$('.progress-label').html(`${quizz.respuestas.length} of ${quizz.contar.total} answered`);
 		let multiplo = 20*quizz.respuestas.length;
 		$(".progress-bar").width(`${multiplo}%`);
-	},
-	mostrarRespuestas: ()=>{
-		$("header").html(`<img src="assets/img/truck.svg">`);
-		$('#prueba').empty().append('<div id="respuestas"></div>');
-		quizz.barraProgreso();
-		quizz.listaRespuestas(false, 'Submit', quizz.comparar);
-		$('#respuestas').prepend('<h1 class="text-center">Here are your answer:</h1>');
 	},
 	listaRespuestas:(comparar, boton, funcion)=>{
 		$('#prueba').empty().append('<div id="respuestas"></div>');
 		$.each(quizz.respuestas, (i,l)=>{
-			let estilos = '';
+			let estilo = '';
 			let contenido=l;
 			if(comparar && l==quizz.preguntas[i].respuesta){
-				quizz.correctas++;
-				estilos='class="text-success"';
+				quizz.contar.correctas++;
+				estilo='class="text-success"';
 			}else if(comparar){
-				estilos=`class='text-danger'`;
+				estilo=`class='text-danger'`;
 				contenido = `<strike>${l}</strike> ${quizz.preguntas[i].respuesta}`;
 			}
-			$("#respuestas").append(`<p ${estilos}>${i+1}. ${quizz.preguntas[i].pregunta} <strong>${contenido}</strong></p>`)
+			$("#respuestas").append(`<p ${estilo}>${i+1}. ${quizz.preguntas[i].pregunta} <strong>${contenido}</strong></p>`)
 		})
-		$('<button>').addClass('btn-lg btn-dark').html(boton).appendTo("#respuestas").click(funcion)
+		$('<button>').addClass('btn-lg btn-dark').html(boton).appendTo("#respuestas").click(funcion);
+	},
+	mostrarRespuestas: ()=>{
+		$("header").html(`<img src="assets/img/truck.svg">`);
+		quizz.barraProgreso();
+		quizz.listaRespuestas(false, 'Submit', quizz.comparar);
+		quizz.flecha.siguiente.addClass('disabled').off('click');
+		$('#respuestas').prepend(`<h1 class="text-center">Here are your answer:</h1>`);
 	},
 	comparar:()=>{
 		$('#progreso').hide();
 		$('#flechas').hide();
 		quizz.listaRespuestas(true, 'Star Again', quizz.jugarOtravez);
 		let expresion='';
-		if(quizz.correctas==0){
+		if(quizz.contar.correctas==0){
 			expresion='Ooops, ';
-		} else if(quizz.correctas==quizz.total) {
+		} else if(quizz.contar.correctas==quizz.contar.total) {
 			expresion='Wow, ';
 		} 
-		$('#respuestas').prepend(`<h1 class="text-center">${expresion}${quizz.correctas} out of ${quizz.total} correct!</h1>`);
+		let titulo=`${expresion}${quizz.contar.correctas} out of ${quizz.contar.total} correct!`;
+		$('#respuestas').prepend(`<h1 class="text-center">${titulo}</h1>`);
 	},
-	eventos: ()=>{
+	eventosFlechas: ()=>{
 		quizz.flecha.siguiente.off('click');
 		quizz.flecha.anterior.off('click');
-		if(quizz.respuestas.length>quizz.contador){
+		if(quizz.respuestas.length>quizz.contar.pregunta){
 			quizz.flecha.siguiente.removeClass('disabled').click(quizz.siguiente);
 		}else{
 			quizz.flecha.siguiente.addClass('disabled');
 		}
-		if(quizz.respuestas.length>=quizz.contador && quizz.contador!=0){
+		if(quizz.respuestas.length>=quizz.contar.pregunta && quizz.contar.pregunta!=0){
 			quizz.flecha.anterior.removeClass('disabled').click(quizz.anterior);
 		}else{
 			quizz.flecha.anterior.addClass('disabled');
@@ -143,12 +146,12 @@ const quizz = {
 		$('#progreso').show();
 		$('#flechas').show();
 		quizz.respuestas=[];
-		quizz.contador=0;
-		quizz.correctas=0;
+		quizz.contar.pregunta=0;
+		quizz.contar.correctas=0;
 		quizz.crearPregunta();
 	},
 	iniciar : ()=>{
-		quizz.total= Object.keys(quizz.preguntas).length;
+		quizz.contar.total= Object.keys(quizz.preguntas).length;
 		quizz.flecha.siguiente=$('#siguiente');
 		quizz.flecha.anterior=$('#anterior');
 		quizz.crearPregunta();
