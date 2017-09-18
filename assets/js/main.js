@@ -92,34 +92,38 @@ const quizz = {
 	},
 	mostrarRespuestas: ()=>{
 		$("header").html(`<img src="assets/img/truck.svg">`);
-		$('#prueba').empty().append('<h1 class="text-center">Here are your answer:</h1><div id="respuestas"></div>');
+		$('#prueba').empty().append('<div id="respuestas"></div>');
 		quizz.barraProgreso();
+		quizz.listaRespuestas(false, 'Submit', quizz.comparar);
+		$('#respuestas').prepend('<h1 class="text-center">Here are your answer:</h1>');
+	},
+	listaRespuestas:(comparar, boton, funcion)=>{
+		$('#prueba').empty().append('<div id="respuestas"></div>');
 		$.each(quizz.respuestas, (i,l)=>{
-			$("#respuestas").append(`<p>${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`)
+			let estilos = '';
+			let contenido=l;
+			if(comparar && l==quizz.preguntas[i].respuesta){
+				quizz.correctas++;
+				estilos='class="text-success"';
+			}else if(comparar){
+				estilos=`class='text-danger'`;
+				contenido = `<strike>${l}</strike> ${quizz.preguntas[i].respuesta}`;
+			}
+			$("#respuestas").append(`<p ${estilos}>${i+1}. ${quizz.preguntas[i].pregunta} <strong>${contenido}</strong></p>`)
 		})
-		$('<button>').addClass('btn').html('Submit').appendTo("#respuestas").click(quizz.comparar)
+		$('<button>').addClass('btn-lg btn-dark').html(boton).appendTo("#respuestas").click(funcion)
 	},
 	comparar:()=>{
 		$('#progreso').hide();
 		$('#flechas').hide();
-		$('#prueba').empty().append('<div id="respuestas"></div>');
-		$.each(quizz.respuestas, (i,l)=>{
-			if(l==quizz.preguntas[i].respuesta){
-				quizz.correctas++;
-				$("#respuestas").append(`<p class='text-success'>${i+1}. ${quizz.preguntas[i].pregunta} <strong>${l}</strong></p>`)
-			}else{
-				$("#respuestas").append(
-					`<p class='text-danger'>${i+1}. ${quizz.preguntas[i].pregunta} <strong><strike>${l}</strike></strong> ${quizz.preguntas[i].respuesta}</p>`
-				)
-			}
-		})
-		let dd='';
+		quizz.listaRespuestas(true, 'Star Again', quizz.jugarOtravez);
+		let expresion='';
 		if(quizz.correctas==0){
-			dd='Ooops, ';
+			expresion='Ooops, ';
 		} else if(quizz.correctas==quizz.total) {
-			dd='Wow, ';
+			expresion='Wow, ';
 		} 
-		$('#respuestas').prepend(`<h1 class="text-center">${dd}${quizz.correctas} out of ${quizz.total} correct!</h1>`);
+		$('#respuestas').prepend(`<h1 class="text-center">${expresion}${quizz.correctas} out of ${quizz.total} correct!</h1>`);
 	},
 	eventos: ()=>{
 		quizz.flecha.siguiente.off('click');
@@ -134,6 +138,14 @@ const quizz = {
 		}else{
 			quizz.flecha.anterior.addClass('disabled');
 		}
+	},
+	jugarOtravez:()=>{
+		$('#progreso').show();
+		$('#flechas').show();
+		quizz.respuestas=[];
+		quizz.contador=0;
+		quizz.correctas=0;
+		quizz.crearPregunta();
 	},
 	iniciar : ()=>{
 		quizz.total= Object.keys(quizz.preguntas).length;

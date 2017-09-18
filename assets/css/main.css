@@ -65,7 +65,7 @@ header img {
     margin-bottom: 50px;
  }
  #respuestas{
-    max-width: 70%;
+    max-width: 80%;
     margin: 0 auto;
  }
 .opciones button {
@@ -109,6 +109,13 @@ header img {
  #redesSociales:hover{
      opacity: 1;
  }
+ .btn-dark {
+    text-align: center;
+    padding: 6px 14px;
+    background-color: #4b4668;
+    color: #fff;
+    margin-top: 30px;
+}
 @media (max-width: 720px){
     header{
         margin-bottom: 20px;
