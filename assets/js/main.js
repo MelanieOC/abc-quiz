@@ -1,3 +1,4 @@
+'use strict'
 const trivia = {
 	preguntas:{
 		0:{
