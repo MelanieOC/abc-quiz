@@ -48,7 +48,7 @@ header img {
 }
 .content {
     background-color: #fff;
-    padding: 60px 20px 90px;
+    padding: 60px 80px 90px;
     box-shadow: 4px 6px 38px hsla(0,100%,79%,.3);
     max-width: 90%;
     margin: 0 auto;
@@ -97,12 +97,15 @@ header img {
 }
 
 @media (max-width: 720px){
+    header{
+        margin-bottom: 20px;
+    }
     #flechas{
         position: absolute;
         top: 0;
         right: 20px;    
     }
     .content {
-        padding: 20px 20px 90px;
+        padding: 20px;
     }
 }
